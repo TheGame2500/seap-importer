@@ -1,0 +1,58 @@
+{
+    "extends": ["plugin:meteor/recommended", "airbnb-base"],
+    "plugins": [
+    ],
+    "settings" : {
+        "import/resolver" : "node"
+    },
+    "rules": {
+        "indent": ["error", "tab"],
+        "no-tabs": "off",
+        "import/no-absolute-path" : "off",
+        "import/prefer-default-export": "off",
+        "import/no-extraneous-dependencies" : "off",
+        "import/extensions" : "off",
+        "import/no-unresolved" : "error",
+        "func-names": "off",
+        "no-undef":"error",
+        "object-shorthand":"warn",
+        "prefer-arrow-callback": "off",
+        "consistent-return": "off",
+        "padded-blocks": "off",
+        "semi": "off",
+        "no-underscore-dangle": "off",
+        "no-plusplus": "off",
+        "eqeqeq": "warn",
+        "quotes": "warn",
+        "radix": "off",
+        "no-unused-vars": "error",
+        "no-param-reassign": "error",
+        "guard-for-in": "off",
+        "no-restricted-syntax": "off",
+        "arrow-parens": "off",
+        "max-len": "off",
+        "no-unused-expressions": "off",
+        "no-eval" : "warn",
+        "no-useless-escape" : "off",
+        "no-continue" : "off",
+        "no-extend-native" : "off",
+        "global-require" : "off",
+        "no-bitwise" : "off",
+        "no-restricted-properties" : "off",
+        "spaced-comment" : "off",
+        "no-unreachable" : "warn",
+        "no-trailing-spaces" : "warn",
+        "no-await-in-loop": "off",
+	    "no-console": "off"
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true,
+        "meteor": true,
+        "mongo": true,
+        "mocha": true
+    },
+    "root" : true
+}
+
