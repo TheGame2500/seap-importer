@@ -4,14 +4,14 @@ const moment = require('moment')
 const fs = require('fs')
 
 const HEADER_VALS = {
-	AutoritateContractanta: 'contractingAuthority',
-	Castigator: 'supplier',
-	Descriere: 'directAcquisitionName',
-	NumarContract: 'uniqueIdentificationCode',
-	DataContract: 'finalizationDate',
-	ValoareRON: 'estimatedValueRon',
-	ValoareEUR: 'estimatedValueOtherCurrency',
-	CPVCode: 'cpvCode',
+	AUTORITATE_CONTRACTANTA: 'contractingAuthority',
+	CASTIGATOR: 'supplier',
+	DESCRIERE: 'directAcquisitionName',
+	NUMAR_CONTRACT: 'uniqueIdentificationCode',
+	DATA_CONTRACT: 'finalizationDate',
+	VALOARE_RON: 'estimatedValueRon',
+	VALOARE_EUR: 'estimatedValueOtherCurrency',
+	CPV_CODE: 'cpvCode',
 }
 
 function getFilenames(inputFolder) {
@@ -52,7 +52,7 @@ async function importFile(filePath) {
 			if (context.column !== 'finalizationDate') return value.replace(/;/g, '|')
 
 			try {
-				return moment(value.replace(' ', 'T')).toDate()
+				return moment.utc(value, 'DD-MM-YYYY').toDate()
 			} catch (ex) {
 				console.error('\n\nex', ex)
 				console.log('value ', value, '\n\n')
@@ -71,9 +71,9 @@ async function importFile(filePath) {
 					let value = record[colName]
 
 					if (colName === 'contractingAuthority') {
-						value = `${record.AutoritateContractantaCUI} ${value}`
+						value = `${record.AUTORITATE_CONTRACTANTA_CUI} ${value}`
 					} else if (colName === 'supplier') {
-						value = `${record.CastigatorCUI} ${record[Object.keys(record)[0]]}` // something wrong with Castigator column :/
+						value = `${record.CASTIGATOR_CUI} ${record[Object.keys(record)[0]]}` // something wrong with Castigator column :/
 					} else if (colName.includes('estimatedValue')) {
 						value = parseFloat(value)
 					}
@@ -81,7 +81,7 @@ async function importFile(filePath) {
 					return newPrev
 				}, { csvImport: true })
 
-				// console.log('got contract', Contracts, contract)
+
 				contract.week = getMonday(contract.finalizationDate)
 				Contracts.update({ uniqueIdentificationCode: contract.uniqueIdentificationCode }, { $set: contract }, { upsert: true }, (err) => { if (err) console.error('ERROR', err) })
 			} catch (ex) {
