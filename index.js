@@ -44,12 +44,12 @@ async function importFile(filePath) {
 	})
 
 	const parser = csvParse({
-		delimiter: '^',
+		delimiter: ';',
 		skip_lines_with_error: true,
 		columns: headers => headers.map(header => HEADER_VALS[header] || header),
 		// columns: true,
 		cast(value, context) {
-			if (context.column !== 'finalizationDate') return value
+			if (context.column !== 'finalizationDate') return value.replace(/;/g, '|')
 
 			try {
 				return moment(value.replace(' ', 'T')).toDate()
