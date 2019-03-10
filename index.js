@@ -18,6 +18,20 @@ function getFilenames(inputFolder) {
 	return fs.readdirSync(inputFolder)
 }
 
+function getMonday(newD) {
+	const d = new Date(newD);
+	const day = d.getDay();
+	const diff = (d.getDate() - day) + (day === 0 ? -6 : 1); // adjust when day is sunday
+
+	d.setDate(diff)
+	d.setHours(0 - (d.getTimezoneOffset() / 60));
+	d.setMinutes(0);
+	d.setSeconds(0);
+	d.setMilliseconds(0)
+
+	return new Date(d);
+}
+
 async function importFile(filePath) {
 	const start = Date.now()
 	const Contracts = await require('./contracts')()
@@ -68,6 +82,7 @@ async function importFile(filePath) {
 				}, { csvImport: true })
 
 				// console.log('got contract', Contracts, contract)
+				contract.week = getMonday(contract.finalizationDate)
 				Contracts.update({ uniqueIdentificationCode: contract.uniqueIdentificationCode }, { $set: contract }, { upsert: true }, (err) => { if (err) console.error('ERROR', err) })
 			} catch (ex) {
 				console.error('error when parsing record', record, ex)
